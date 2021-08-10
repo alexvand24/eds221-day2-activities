@@ -1,0 +1,103 @@
+---
+title: "Salamander & Trout Data"
+author: "Alex Vand"
+date: "8/10/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(here)
+library(janitor)
+```
+
+## Read in the data
+
+```{r}
+mack_verts <- read_csv(here::here("data", "AS00601.csv"))
+mack_verts
+
+# Update the names to lower_snake_case
+
+mack_verts <- clean_names(mack_verts)
+names(mack_verts)
+```
+
+## Data wrangling and exploration
+
+```{r}
+# Store the 5th value in column “WEIGHT” as `mc_wt_5`. Check by looking at your data frame to confirm.
+mc_wt_5 <- mack_verts$weight[5]
+mc_wt_5
+
+# Store the 8th - 20th value in the “LENGTH1” column as `mc_length_8_20`. Check by looking at your data frame to confirm.
+mc_length_8_20 <- mack_verts$length1[8:20]
+mc_length_8_20
+
+# Store everything in column SAMPLEDATE as a vector called `mc_dates`.
+mc_dates <- mack_verts$sampledate
+length(mc_dates) # to see number of entries in this vector
+```
+
+## Make a salamander subset
+Create a subset that only contains observations for Pacific Giant Salamanders (species _Dicamptodon tenebrosus_ , stored in `species` as 'DITE'). Store the subset as `mc_salamanders`. _Hint_ : see `dplyr::filter()`!
+
+```{r}
+mc_salamanders <- filter(mack_verts, species == 'DITE')
+mc_salamanders
+length(mc_salamanders) # number of columns
+length(mc_salamanders$species) # number of rows
+```
+
+
+## Make a scatterplot
+
+- Create a scatterplot of length1 (snout-vent length in millimeters) versus weight (grams) for all salamanders in the dataset. Update axis labels, title, subtitle, and add a caption with the data source. Customize point color and size, possibly opacity, and theme.
+- Export your scatterplot as `salamander_size.png` to your figs folder.
+
+```{r}
+salamander_size <-
+  ggplot(data = mc_salamanders, aes(x = length1, y = weight)) +
+  geom_point(color = "orange", alpha = 0.5, shape = "square") +
+  labs(title = "Salamander Length (mm) vs. Weight (g)",
+       subtitle = "snout-vent length for Dicamptodon species",
+       caption = "Data source: EDI Data Portal", 
+       x = "Length (mm)",
+       y = "Weight (g)") +
+  theme_grey()
+
+ggsave(here::here("figs", "salamander_size.png"))
+```
+
+
+## Make a cutthroat plot
+
+- Similar to above, make a subset called mc_trout that only contains observations for cutthroat trout
+- Create a scatterplot of length1 by weight for all trout in the dataset
+- Customize so that the point color depends on reach
+- Customize your color scheme (e.g. scale_color_manual())
+- Facet your plot by creek reach (facet_wrap(~...))
+- Update graph axis labels and title
+- Export your graph as cutthroat_size.png to figs
+
+```{r}
+mc_trout <- filter(mack_verts, species == "ONCL")
+
+cutthroat_size <-
+  ggplot(data = mc_trout, aes(x = length1, y = weight)) +
+  geom_point(aes(color = reach)) +
+  scale_color_manual(values = c("red", "blue", "yellow")) +
+  facet_wrap(~reach) +
+  labs(x = "Length (mm)",
+       y = "Weight (g)",
+       title = "Trout Length (mm) vs. Weigth (g)")
+
+ggsave(here::here("figs", "cutthroat_size.png"))
+```
+
+
+
+
+
+

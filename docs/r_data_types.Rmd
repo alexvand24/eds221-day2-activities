@@ -1,0 +1,84 @@
+---
+title: "R Data Types"
+author: "Alex Vand"
+date: "8/10/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Vector 1
+```{r}
+vec_1 <- c(2, 5, 9, 10, 8, 12, 1, 0)
+vec_1
+```
+
+Check the following for that vector:
+
+- What is the class of the vector? class()
+- What type of variable does it store? typeof()
+- Access the 3rd element and store as vec_1_e3
+- Access the 1st element and store as vec_1_e1
+- Access the 5th through 7th elements and store as vec_1_e5to7
+- Reassign vec_1 as a character using as.character, stored as vec_1_char. What does the output look like?
+
+```{r}
+class(vec_1)
+typeof(vec_1)
+vec_1_e3 <- vec_1[3]
+vec_1_e3
+vec_1_e1 <- vec_1[1]
+vec_1_e1
+vec_1_e5to7 <- vec_1[5:7]
+vec_1_e5to7
+vec_1_char <- as.character(vec_1)
+vec_1_char
+```
+
+## Vector 2
+
+```{r}
+vec_2 <- c(town = "Santa Barbara", location = "Rincon", swell = "south")
+vec_2
+class(vec_2)
+typeof(vec_2)
+vec_2[2]
+vec_2["location"]
+```
+- What is the class of vector elements? class()
+- What is the length of vec_2?
+- Access the 2nd element by name and store as vec_2_e2
+
+```{r}
+class(vec_2)
+length(vec_2)
+vec_2_e2 <- vec_2[2]
+vec_2_e2
+```
+
+## Create a data frame in R, index
+
+```{r}
+df_1 <- data.frame(region = c("A", "B", "A", "D"),
+                   species = c("otter", "great white", "sea lion", "gray whale"),
+                   count = c(12, 2, 36, 6))
+df_1
+```
+
+- Return the class of the entire data frame
+- Return the class of the species column
+- Find the maximum value of the count() column, store as max_count
+
+```{r}
+class(df_1)
+class(df_1$species)
+class(df_1[[3]])
+max_count <- max(df_1$count)
+max_count
+```
+
+
+
+
